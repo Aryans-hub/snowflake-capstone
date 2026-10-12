@@ -1,0 +1,22 @@
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+extend-exclude = [
+    "data",
+    ".venv",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # Pyflakes errors
+    "W",    # pycodestyle warnings
+    "I",    # Import sorting
+    "B",    # Common bug-prone patterns
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
