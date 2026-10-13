@@ -1,9 +1,8 @@
 from datetime import datetime
 
+from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-
-from airflow import DAG
 
 
 def validate_transaction_data():

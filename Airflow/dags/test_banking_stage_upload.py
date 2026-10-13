@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
-
 from airflow import DAG
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 with DAG(
     dag_id="test_banking_stage_upload",

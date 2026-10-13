@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
-
 from airflow import DAG
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 SNOWFLAKE_CONN_ID = "snowflake_conn"
 

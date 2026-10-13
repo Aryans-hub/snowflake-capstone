@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from airflow.providers.snowflake.operators.snowflake import SQLExecuteQueryOperator
-
 from airflow import DAG
+from airflow.providers.snowflake.operators.snowflake import SQLExecuteQueryOperator
 
 with DAG(
     dag_id="test_snowflake_connection",
