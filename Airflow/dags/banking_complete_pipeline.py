@@ -1,9 +1,8 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.operators.bash import BashOperator
-
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 SNOWFLAKE_CONN_ID = "snowflake_conn"
 
@@ -19,7 +18,6 @@ with DAG(
     catchup=False,
     tags=["banking", "complete", "bronze", "silver", "gold"],
 ) as dag:
-
     upload_to_stage = SQLExecuteQueryOperator(
         task_id="upload_to_stage",
         conn_id=SNOWFLAKE_CONN_ID,

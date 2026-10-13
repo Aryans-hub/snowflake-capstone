@@ -3,7 +3,6 @@ from datetime import datetime
 from airflow import DAG
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
-
 with DAG(
     dag_id="test_banking_stage_upload",
     start_date=datetime(2026, 1, 1),
@@ -11,7 +10,6 @@ with DAG(
     catchup=False,
     tags=["banking", "snowflake", "test"],
 ) as dag:
-
     upload_file = SQLExecuteQueryOperator(
         task_id="upload_file",
         conn_id="snowflake_conn",
