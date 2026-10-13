@@ -69,4 +69,9 @@ with DAG(
         bash_command="echo 'Banking quality checks completed'",
     )
 
-    validate_transactions >> validate_customers >> generate_report >> notify_completion
+    (
+        validate_transactions
+        >> validate_customers
+        >> generate_report
+        >> notify_completion
+    )
