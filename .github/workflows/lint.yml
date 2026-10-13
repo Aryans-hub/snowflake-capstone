@@ -66,5 +66,8 @@ jobs:
           sudo install gitleaks /usr/local/bin/gitleaks
           rm -f gitleaks.tar.gz gitleaks
 
+      - name: Scan repository files for secrets
+        run: gitleaks dir . --redact --verbose
+
       - name: Scan repository history for secrets
         run: gitleaks git . --redact --verbose

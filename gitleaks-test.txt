@@ -1,1 +1,1 @@
-GITHUB_TOKEN=ghp_abcdefghijklmnopqrstuvwxyz1234567890
+GITHUB_TOKEN=ghp_A8kP3mQ9xR2vN7cL5wY1zF6bH4jT0sD8eG2
