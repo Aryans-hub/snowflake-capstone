@@ -32,6 +32,9 @@ jobs:
       - name: Verify Ruff version
         run: ruff --version
 
+      - name: Clear Ruff cache
+        run: ruff cache clean
+
       - name: Check linting
         run: ruff check Airflow/dags
 
