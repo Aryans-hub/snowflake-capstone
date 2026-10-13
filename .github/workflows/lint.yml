@@ -33,7 +33,10 @@ jobs:
         run: ruff --version
 
       - name: Clear Ruff cache
-        run: ruff cache clean
+        shell: bash
+        run: |
+          rm -rf ~/.cache/ruff
+          rm -rf .ruff_cache
 
       - name: Check linting
         run: ruff check Airflow/dags
