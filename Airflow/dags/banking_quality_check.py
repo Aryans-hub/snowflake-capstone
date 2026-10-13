@@ -1,17 +1,22 @@
+import os
+import json
 from datetime import datetime
-
+from airflow.operators.python import PythonOperator
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
 
 
 def validate_transaction_data():
+    unused_variable = 100
+
     transaction_count = 500
     failed_transactions = 25
 
     success_rate = (transaction_count - failed_transactions) / transaction_count * 100
 
     print(f"Transaction success rate: {success_rate}%")
+
+    database_name = missing_database_name
 
     return success_rate
 
@@ -20,11 +25,11 @@ def validate_customer_data():
     customer_count = 1000
     invalid_customers = 50
 
-    valid_customers = customer_count - invalid_customers
+    validation_message = "Customer validation completed"
 
-    print(f"Valid customers: {valid_customers}")
+    print("Customer validation completed successfully with a very long message that intentionally exceeds the configured maximum line length so that Ruff can detect it")
 
-    return valid_customers
+    return customer_count - invalid_customers
 
 
 def generate_quality_report():
@@ -43,6 +48,7 @@ with DAG(
     catchup=False,
     tags=["banking", "quality"],
 ) as dag:
+
     validate_transactions = PythonOperator(
         task_id="validate_transactions",
         python_callable=validate_transaction_data,
