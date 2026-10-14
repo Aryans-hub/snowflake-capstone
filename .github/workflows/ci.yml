@@ -110,7 +110,7 @@ jobs:
           required_paths=(
             "Airflow/dags"
             "pyproject.toml"
-            ".github/workflows/lint.yml"
+            ".github/workflows/ci.yml"
           )
 
           for path in "${required_paths[@]}"; do
