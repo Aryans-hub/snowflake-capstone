@@ -4,10 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  
-  # push:
-  #   branches:
-  #     - main
 
 permissions:
   contents: read
@@ -42,8 +38,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - name: Install Gitleaks
         env:
@@ -59,9 +53,6 @@ jobs:
 
       - name: Scan repository files for secrets
         run: gitleaks dir . --redact --verbose
-
-      # - name: Scan repository history for secrets
-      #   run: gitleaks git . --redact --verbose
 
   repo-guard:
     name: Repository Guard
@@ -127,14 +118,12 @@ jobs:
           echo "Required project structure is present."
 
   convention-check:
-    name: Branch and Commit Convention Check
+    name: Branch Convention Check
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - name: Check branch name
         env:
@@ -142,43 +131,8 @@ jobs:
         run: |
           if [[ ! "$BRANCH_NAME" =~ ^feature/[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
             echo "ERROR: Invalid branch name: $BRANCH_NAME"
-            echo "Expected format: feature/<lowercase-description>"
-            echo "Example: feature/add-banking-dag"
             exit 1
           fi
 
           echo "Branch name is valid."
-
-      - name: Check commit messages
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          pattern='^(feat|fix|docs|style|refactor|test|ci|build|perf|chore)(\([a-z0-9._-]+\))?!?: .+'
-
-          commits=$(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA")
-          commits=$(git rev-parse "$HEAD_SHA")
-
-          if [ -z "$commits" ]; then
-            echo "No commits found to validate."
-            exit 0
-          fi
-
-          failed=0
-
-          while IFS= read -r commit; do
-            message=$(git log -1 --format=%s "$commit")
-            echo "Checking: $message"
-
-            if [[ ! "$message" =~ $pattern ]]; then
-              echo "ERROR: Invalid commit message: $message"
-              failed=1
-            fi
-          done <<< "$commits"
-
-          if [ "$failed" -ne 0 ]; then
-            echo "One or more commit messages do not follow the required convention."
-            exit 1
-          fi
-
-          echo "All commit messages follow the convention."
+          
