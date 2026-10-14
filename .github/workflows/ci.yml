@@ -157,6 +157,7 @@ jobs:
           pattern='^(feat|fix|docs|style|refactor|test|ci|build|perf|chore)(\([a-z0-9._-]+\))?!?: .+'
 
           commits=$(git rev-list --no-merges "$BASE_SHA..$HEAD_SHA")
+          commits=$(git rev-parse "$HEAD_SHA")
 
           if [ -z "$commits" ]; then
             echo "No commits found to validate."
