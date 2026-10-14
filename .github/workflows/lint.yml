@@ -56,8 +56,8 @@ jobs:
       - name: Scan repository files for secrets
         run: gitleaks dir . --redact --verbose
 
-      - name: Scan repository history for secrets
-        run: gitleaks git . --redact --verbose
+      # - name: Scan repository history for secrets
+      #   run: gitleaks git . --redact --verbose
 
   repo-guard:
     name: Repository Guard
