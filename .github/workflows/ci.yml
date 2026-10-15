@@ -126,14 +126,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Check branch name
-        shell: C:\Program Files\Git\bin\bash.exe {0}
+        shell: pwsh
         env:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
-          if [[ ! "$BRANCH_NAME" =~ ^feature/[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
-            echo "ERROR: Invalid branch name: $BRANCH_NAME"
+          if ($env:BRANCH_NAME -notmatch '^feature/[a-z0-9]+(-[a-z0-9]+)*$') {
+            Write-Error "Invalid branch name: $env:BRANCH_NAME"
             exit 1
-          fi
+          }
 
-          echo "Branch name is valid."
+          Write-Host "Branch name is valid."
           
