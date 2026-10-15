@@ -11,7 +11,7 @@ permissions:
 jobs:
   linting:
     name: Ruff Lint and Format
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
       - name: Checkout repository
