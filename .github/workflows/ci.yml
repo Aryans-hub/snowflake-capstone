@@ -126,7 +126,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Check branch name
-        shell: pwsh
+        shell: powershell
         env:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
