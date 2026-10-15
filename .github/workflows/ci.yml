@@ -119,13 +119,14 @@ jobs:
 
   convention-check:
     name: Branch Convention Check
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Check branch name
+        shell: bash
         env:
           BRANCH_NAME: ${{ github.head_ref }}
         run: |
