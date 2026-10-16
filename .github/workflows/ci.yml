@@ -91,12 +91,13 @@ jobs:
 
       - name: Check large files
         run: |
-          python -c @"
+          @'
           import os
           import subprocess
           import sys
 
           max_size = 100 * 1024 * 1024
+
           files = subprocess.check_output(
               ["git", "ls-files", "-z"]
           ).decode().split("\0")
@@ -114,7 +115,13 @@ jobs:
               sys.exit(1)
 
           print("No tracked files larger than 100 MB detected.")
-          "@
+          '@ | Set-Content -Path "$env:TEMP\check_large_files.py" -Encoding utf8
+
+          python "$env:TEMP\check_large_files.py"
+
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
 
       - name: Check required project structure
         run: |
