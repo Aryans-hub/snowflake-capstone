@@ -33,23 +33,23 @@ jobs:
 
   secret-scan:
     name: Secret Scan
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Install Gitleaks
-        env:
-          GITLEAKS_VERSION: "8.24.3"
-        run: |
-          curl -sSfL \
-            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
-            -o gitleaks.tar.gz
+      # - name: Install Gitleaks
+      #   env:
+      #     GITLEAKS_VERSION: "8.24.3"
+      #   run: |
+      #     curl -sSfL \
+      #       "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+      #       -o gitleaks.tar.gz
 
-          tar -xzf gitleaks.tar.gz gitleaks
-          sudo install gitleaks /usr/local/bin/gitleaks
-          rm -f gitleaks.tar.gz gitleaks
+      #     tar -xzf gitleaks.tar.gz gitleaks
+      #     sudo install gitleaks /usr/local/bin/gitleaks
+      #     rm -f gitleaks.tar.gz gitleaks
 
       - name: Scan repository files for secrets
         run: gitleaks dir . --redact --verbose
