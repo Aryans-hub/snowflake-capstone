@@ -57,26 +57,41 @@ jobs:
 
   repo-guard:
     name: Repository Guard
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Check forbidden files
-        shell: bash
-        run: |
-          if git ls-files | grep -E '(^|/)\.env($|\.)' \
-            | grep -Ev '(^|/)\.env\.example$'; then
-            echo "ERROR: Forbidden .env file detected!"
-            exit 1
-          fi
+        # shell: bash
+        # run: |
+        #   if git ls-files | grep -E '(^|/)\.env($|\.)' \
+        #     | grep -Ev '(^|/)\.env\.example$'; then
+        #     echo "ERROR: Forbidden .env file detected!"
+        #     exit 1
+        #   fi
 
-          echo "No forbidden .env files detected."
+        #   echo "No forbidden .env files detected."
+        run: |
+          $trackedFiles = git ls-files
+
+          $forbiddenFiles = $trackedFiles | Where-Object {
+            $_ -match '(^|/)\.env($|\.)' -and
+            $_ -notmatch '(^|/)\.env\.example$'
+          }
+
+          if ($forbiddenFiles) {
+            Write-Error "Forbidden .env file detected:"
+            $forbiddenFiles | ForEach-Object { Write-Host $_ }
+            exit 1
+          }
+
+          Write-Host "No forbidden .env files detected."
 
       - name: Check large files
         run: |
-          python - <<'PY'
+          python -c @"
           import os
           import subprocess
           import sys
@@ -99,24 +114,24 @@ jobs:
               sys.exit(1)
 
           print("No tracked files larger than 100 MB detected.")
-          PY
+          "@
 
       - name: Check required project structure
         run: |
-          required_paths=(
+          $requiredPaths = @(
             "Airflow/dags"
             "pyproject.toml"
             ".github/workflows/ci.yml"
           )
 
-          for path in "${required_paths[@]}"; do
-            if [ ! -e "$path" ]; then
-              echo "ERROR: Required path missing: $path"
+          foreach ($path in $requiredPaths) {
+            if (-not (Test-Path $path)) {
+              Write-Error "Required path missing: $path"
               exit 1
-            fi
-          done
+            }
+          }
 
-          echo "Required project structure is present."
+          Write-Host "Required project structure is present."
 
   convention-check:
     name: Branch Convention Check
