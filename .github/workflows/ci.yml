@@ -52,7 +52,8 @@ jobs:
       #     rm -f gitleaks.tar.gz gitleaks
 
       - name: Scan repository files for secrets
-        run: gitleaks dir . --redact --verbose
+        # run: gitleaks dir . --redact --verbose
+        run: '& "C:\Tools\Gitleaks\gitleaks.exe" dir . --redact --verbose'
 
   repo-guard:
     name: Repository Guard
