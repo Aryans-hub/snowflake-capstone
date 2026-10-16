@@ -141,7 +141,7 @@ jobs:
           Write-Host "Required project structure is present."
 
   convention-check:
-    name: Branch Convention Check
+    name: Convention Checks
     runs-on: [self-hosted, Windows, X64]
 
     steps:
@@ -159,4 +159,34 @@ jobs:
           }
 
           Write-Host "Branch name is valid."
+
+      - name: Check commit message format
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $allowedTypes = "feat|fix|docs|test|refactor|ci|build|chore|perf"
+
+          $commitMessages = gh api `
+            "repos/$env:REPOSITORY/pulls/$env:PR_NUMBER/commits" `
+            --paginate `
+            --jq '.[].commit.message'
+
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to retrieve pull request commits."
+            exit 1
+          }
+
+          foreach ($message in $commitMessages) {
+            $subject = ($message -split "`n")[0]
+
+            if ($subject -notmatch "^($allowedTypes): .+") {
+              Write-Error "Invalid commit message: $subject"
+              Write-Host "Expected format: type: description"
+              exit 1
+            }
+          }
+
+          Write-Host "All commit messages follow the required format."
           
