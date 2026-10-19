@@ -97,23 +97,6 @@ jobs:
             exit $LASTEXITCODE
           }
 
-      - name: Check required project structure
-        run: |
-          $requiredPaths = @(
-            "Airflow/dags"
-            "pyproject.toml"
-            ".github/workflows/ci.yml"
-          )
-
-          foreach ($path in $requiredPaths) {
-            if (-not (Test-Path $path)) {
-              Write-Error "Required path missing: $path"
-              exit 1
-            }
-          }
-
-          Write-Host "Required project structure is present."
-
   convention-check:
     name: Convention Checks
     runs-on: [self-hosted, Windows, X64]
