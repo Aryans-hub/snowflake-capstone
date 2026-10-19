@@ -8,6 +8,7 @@ with DAG(
     start_date=datetime(2026, 1, 1),
     schedule=None,
     catchup=False,
+    tags=["banking", "snowflake", "test"],
 ) as dag:
     test_connection = SQLExecuteQueryOperator(
         task_id="test_connection",

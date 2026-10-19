@@ -23,3 +23,5 @@ Thumbs.db
 
 # Local input data
 data/input/*.csv
+
+actions-runner/
